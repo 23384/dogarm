@@ -2,6 +2,8 @@
   <img src="images/image.png" alt="dogarm" />
 </div>
 
+By James.
+
 # dogarm
 
 dogarm is an ARM ISA disassembly engine that does real time decoding of 32 bit ARM opcodes into human readable assembly mnemonics. The library implements instruction format parsing, operand extraction and encoding translation for the ARM architectures unified instruction set and supports data processing, memory transfer, branch and control flow operations w/ full conditional execution semantics
