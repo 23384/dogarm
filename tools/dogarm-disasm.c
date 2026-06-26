@@ -20,16 +20,7 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-    if (!S_ISREG(st.st_mode)) {
-        fprintf(stderr, "Error: input is not a regular file\n");
-        return EXIT_FAILURE;
-    }
-    if (st.st_size < 0 || (uintmax_t)st.st_size > (uintmax_t)SIZE_MAX) {
-        fprintf(stderr, "Error: file is too large\n");
-        return EXIT_FAILURE;
-    }
-
-    size_t file_size = (size_t)st.st_size;
+    size_t file_size = st.st_size;
     
     FILE *fp = fopen(argv[1], "rb");
     if (!fp) {
@@ -43,15 +34,9 @@ int main(int argc, char *argv[]) {
     }
 
     if (file_size % 4 != 0) {
-        size_t truncated_size = file_size - (file_size % 4u);
         fprintf(stderr, "Warning: file size (%zu bytes) is not a multiple of 4, truncating to %zu bytes\n",
-                file_size, truncated_size);
-        file_size = truncated_size;
-        if (file_size == 0) {
-            fprintf(stderr, "Error: no complete 32-bit instructions to disassemble\n");
-            fclose(fp);
-            return EXIT_FAILURE;
-        }
+                file_size, file_size - (file_size % 4));
+        file_size -= (file_size % 4);
     }
 
     uint8_t *buffer = malloc(file_size);
@@ -95,3 +80,4 @@ int main(int argc, char *argv[]) {
     free(buffer);
     return EXIT_SUCCESS;
 }
+

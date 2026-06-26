@@ -11,9 +11,6 @@ dogarm_disasm_t *dogarm_disasm(const void *buffer, const size_t nbytes) {
     
     const uint8_t *buf = (const uint8_t *)buffer;
     size_t ninstr = nbytes / 4;
-    if (ninstr > ((size_t)UINT32_MAX / 4u) + 1u) {
-        return NULL;
-    }
     
     dogarm_disasm_t *disasm = malloc(sizeof(dogarm_disasm_t));
     if (!disasm) {
@@ -29,7 +26,7 @@ dogarm_disasm_t *dogarm_disasm(const void *buffer, const size_t nbytes) {
     }
     
     for (size_t i = 0; i < ninstr; i++) {
-        uint32_t addr = (uint32_t)(i * 4u);
+        uint32_t addr = i * 4;
         instruction_t instr;
         
         disasm->instructions[i].address = addr;
